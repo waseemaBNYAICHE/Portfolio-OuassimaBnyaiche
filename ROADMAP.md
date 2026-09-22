@@ -4,17 +4,17 @@
 
 Développer une plateforme web dynamique permettant aux utilisateurs de créer, gérer et publier leur portfolio professionnel.
 
-## Jour 1 — Conception, Docker et CI
+## Partie 1 — Conception, Docker et CI
 
-- [ ] Finaliser le cahier des charges
-- [ ] Valider le MCD et le MLD
-- [ ] Définir l’architecture technique
-- [ ] Configurer Docker Compose
-- [ ] Configurer PostgreSQL
-- [ ] Préparer le conteneur du service IA
-- [ ] Configurer GitHub Actions CI
+- [x] Finaliser le cahier des charges
+- [x] Valider le MCD et le MLD
+- [x] Définir l’architecture technique
+- [x] Configurer Docker Compose
+- [x] Configurer PostgreSQL
+- [x] Préparer le conteneur du service IA
+- [x] Configurer GitHub Actions CI
 
-## Jour 2 — Backend Laravel
+## Partie 2 — Backend Laravel
 
 - [ ] Configurer Laravel Sanctum
 - [ ] Développer l’inscription et la connexion
