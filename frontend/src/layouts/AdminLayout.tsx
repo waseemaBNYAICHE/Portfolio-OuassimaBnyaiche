@@ -52,6 +52,11 @@ const menuItems = [
     path: "/admin/messages",
     icon: MessageSquare,
   },
+  {
+    label: "Services",
+    path: "/admin/services",
+    icon: Settings,
+  },
 ];
 
 export default function AdminLayout() {

@@ -41,8 +41,10 @@ export default function LoginPage() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-5 py-10 text-white">
-      <div className="absolute left-[-120px] top-[-100px] h-80 w-80 rounded-full bg-blue-600/30 blur-[100px]" />
-      <div className="absolute bottom-[-140px] right-[-100px] h-96 w-96 rounded-full bg-violet-600/20 blur-[120px]" />
+      <div className="login-grid" />
+      <div className="login-orb login-orb-a absolute left-[-120px] top-[-100px] h-80 w-80 rounded-full bg-lime-400/20 blur-[100px]" />
+      <div className="login-orb login-orb-b absolute bottom-[-140px] right-[-100px] h-96 w-96 rounded-full bg-violet-600/30 blur-[120px]" />
+      <div className="login-orb login-orb-c absolute left-[48%] top-[20%] h-56 w-56 rounded-full bg-cyan-500/15 blur-[100px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 35, rotateX: 8 }}
@@ -55,8 +57,8 @@ export default function LoginPage() {
           <div className="absolute bottom-20 left-[-55px] h-48 w-48 -rotate-12 rounded-[45px] border border-white/10 bg-white/10 backdrop-blur-md" />
 
           <div className="relative z-10">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-xl font-black text-blue-700 shadow-xl">
-              PH
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-lime-300 text-xl font-black text-slate-950 shadow-xl">
+              O.
             </div>
 
             <p className="mt-7 text-sm font-semibold uppercase tracking-[0.3em] text-blue-200">
