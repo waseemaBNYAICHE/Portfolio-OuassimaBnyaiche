@@ -1,132 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowUpRight, Code2, LoaderCircle, Sparkles } from "lucide-react";
 import type { Project } from "../types/project";
 import { getProjects } from "../services/projectService";
+
+const demoProjects: Project[] = [
+  { id: -1, title: "PortfolioHub", slug: "portfoliohub", short_description: "Portfolio administrable avec une interface animée, une API Laravel et une base PostgreSQL.", description: "Portfolio personnel full-stack.", technologies: ["React", "TypeScript", "Tailwind CSS", "Laravel"], image: "/images/projects/portfoliohub.png", github_url: null, demo_url: null, status: "published", featured: true, display_order: 0, published_at: null, created_at: "", updated_at: "" },
+  { id: -2, title: "VITALIS", slug: "vitalis", short_description: "Application de gestion de clinique : patients, rendez-vous, consultations et dossiers médicaux.", description: "Application médicale full-stack.", technologies: ["Vue.js", "Laravel", "PostgreSQL", "Docker"], image: "/images/projects/vitalis.png", github_url: null, demo_url: null, status: "published", featured: false, display_order: 1, published_at: null, created_at: "", updated_at: "" },
+  { id: -3, title: "Inspection Automobile", slug: "autoinspect", short_description: "Application de gestion des inspections, des véhicules et des rapports de contrôle.", description: "Application de gestion automobile.", technologies: ["Laravel", "MySQL", "Docker"], image: "/images/projects/autoinspect.png", github_url: null, demo_url: null, status: "published", featured: false, display_order: 2, published_at: null, created_at: "", updated_at: "" },
+];
+
+const localProjectImages: Record<string, string> = {
+  portfoliohub: "/images/projects/portfoliohub.png",
+  vitalis: "/images/projects/vitalis.png",
+  autoinspect: "/images/projects/autoinspect.png",
+};
+
+function projectImage(project: Project) {
+  if (project.image) return project.image;
+  const identity = `${project.slug} ${project.title}`.toLowerCase();
+  const key = Object.keys(localProjectImages).find((name) =>
+    identity.includes(name) || (name === "autoinspect" && identity.includes("inspection")),
+  );
+  return key ? localProjectImages[key] : null;
+}
 
 export default function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  useEffect(() => { getProjects().then(setProjects).catch(() => setProjects([])).finally(() => setLoading(false)); }, []);
+  const visible = useMemo(() => (projects.length ? projects : demoProjects).slice(0, 3), [projects]);
 
-  useEffect(() => {
-    getProjects()
-      .then(setProjects)
-      .catch(() => setError("Impossible de charger les projets."))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return (
-    
-
-      <section
-      id="projects"
-      className="bg-slate-950 px-6 py-20 text-white"
-    >
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
-          <p className="font-semibold text-blue-400">Portfolio</p>
-
-          <h2 className="mt-2 text-3xl font-bold sm:text-4xl">
-            Mes projets
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            Découvrez une sélection de mes réalisations et les technologies
-            utilisées.
-          </p>
-        </div>
-
-        {loading && (
-          <p className="text-center text-slate-400">
-            Chargement des projets...
-          </p>
-        )}
-
-        {error && (
-          <p className="text-center text-red-400">
-            {error}
-          </p>
-        )}
-
-        {!loading && !error && projects.length === 0 && (
-          <p className="text-center text-slate-400">
-            Aucun projet disponible.
-          </p>
-        )}
-
-        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-xl"
-            >
-              <div className="flex h-48 items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900">
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-2xl font-bold">
-                    {project.title}
-                  </span>
-                )}
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold">
-                  {project.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-6 text-slate-400">
-                  {project.short_description ?? project.description}
-                </p>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.technologies?.map((technology) => (
-                    <span
-                      key={technology}
-                      className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-300"
-                    >
-                      {technology}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-6 flex gap-3">
-                  {project.github_url && (
-                    <a
-                      href={project.github_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-lg border border-slate-600 px-4 py-2 text-sm transition hover:border-blue-400 hover:text-blue-400"
-                    >
-                      GitHub
-                    </a>
-                  )}
-
-                  {project.demo_url && (
-                    <a
-                      href={project.demo_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold transition hover:bg-blue-500"
-                    >
-                      Voir le projet
-                    </a>
-                  )}
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <div className="deck-content deck-projects">
+    <div className="deck-projects-heading"><span className="deck-index">03</span><div><span className="deck-eyebrow"><Sparkles size={14} /> Projets sélectionnés</span><h2>Du code avec une intention.</h2><p>Des réalisations où l’interface, la logique métier et le cloud avancent ensemble.</p></div></div>
+    {loading ? <div className="deck-project-loading"><LoaderCircle className="animate-spin" /> Connexion aux projets...</div> : <div className="neon-project-grid">{visible.map((project, index) => <motion.article key={project.id} className={`neon-project-card project-tone-${index + 1}`} initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .12 }} whileHover={{ y: -8 }}>
+      <div className="neon-project-visual">{projectImage(project) ? <img src={projectImage(project)!} alt={`Aperçu visuel : ${project.title}`} loading="lazy" /> : <><div className="mini-browser"><i/><i/><i/><span/><span/><span/></div><b>{project.title.slice(0, 2).toUpperCase()}</b></>}</div>
+      <div className="neon-project-info"><div className="project-status"><i /> Projet publié</div><h3>{project.title}</h3><p>{project.short_description || project.description}</p><div className="project-pills">{project.technologies?.slice(0, 4).map((tech) => <span key={tech}>{tech}</span>)}</div><section>{project.github_url ? <a href={project.github_url} target="_blank" rel="noreferrer"><Code2 /> Voir sur GitHub</a> : <span><Code2 /> Code sécurisé</span>}{project.demo_url ? <a href={project.demo_url} target="_blank" rel="noreferrer">Voir le projet <ArrowUpRight /></a> : <button>Découvrir <ArrowUpRight /></button>}</section></div>
+    </motion.article>)}</div>}
+  </div>;
 }

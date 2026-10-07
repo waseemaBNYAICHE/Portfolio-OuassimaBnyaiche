@@ -37,6 +37,9 @@
   .vite {
     position: absolute;
   }
+  .home-socials {
+  margin-bottom: 200px !important;
+}
 
   .framework {
     z-index: 1;
